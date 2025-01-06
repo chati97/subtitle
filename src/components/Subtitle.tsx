@@ -48,7 +48,9 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     // 데이터 수정 반영
 
     const setToData = () => {
-        setData((prev) => prev.map((item, i) => i === id ? content : item))
+        const newData = [...data];
+        newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
+        setData(newData);
         setIsModify(!isModify);
     }
 
@@ -143,9 +145,11 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
         setData((prevData) => prevData.map((item, index) => index === id ? content : item));
     }
 
+    // 컴포넌트 삭제
+
     const delSubtitle = () => {
         const newData = data.filter((_, index) => index !== id);
-        console.log(newData);
+        newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
         setData(newData);
         // setData((data) => (data.filter((_, index) => index !== id)));
         // setData((data) => (data.splice(id, 1)));

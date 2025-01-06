@@ -90,6 +90,9 @@ const YoutubePlayer: React.FC = () => {
       }
       setData(arr);
     }
+    const newData = [...data];
+    newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
+    setData(newData);
     reader.readAsText(file);
   }
 
@@ -128,6 +131,7 @@ const YoutubePlayer: React.FC = () => {
     }
     setData((prevData) => [...prevData, clip]);
   }
+  
 
   return (
       <div className="PlayerView">
