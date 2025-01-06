@@ -141,7 +141,15 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
 
     const handleContent = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        content.korSub = value;
+        const name = e.target.name;
+        switch (name) {
+            case "speakerName":
+                content.speakerName = value;
+                break;
+            case "korSub":
+                content.korSub = value;
+                break;
+        }
         setData((prevData) => prevData.map((item, index) => index === id ? content : item));
     }
 
@@ -158,6 +166,7 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     return (
         <div>
             {/* <input readOnly={!isModify}></input> */}
+            <input name="speakerName" value={content.speakerName} readOnly={!isModify} onChange={handleContent}/>
             <input type="text" name="startTime" value={content.startTime} readOnly={!isModify} onChange={handleTime}/>
             {isModify && setTimingSetter(true)}
             {

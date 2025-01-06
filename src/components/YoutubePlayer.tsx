@@ -159,6 +159,7 @@ const YoutubePlayer: React.FC = () => {
             <button onClick={() => {
               setVideoId(inputValue) 
             }}>setVideoId</button>
+            <button onClick={addClip}>자막추가</button>
             {data.length > 0 && <button onClick={exportCSV}>내보내기</button>}
           </div>
 
@@ -170,7 +171,6 @@ const YoutubePlayer: React.FC = () => {
               <Subtitle key={index} id={index} content={item} data={data} setData={setData} player={player}/>
             </>
           ))}
-          <button onClick={addClip}>자막추가</button>
         </div>
       <Input isOpen={modalOpen} isClose={modalHandler} data={data} setData={setData} />
       </div>

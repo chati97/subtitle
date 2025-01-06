@@ -57,22 +57,23 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
     }
 
     const handleSubtitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name;
         const value = e.target.value;
+        switch (name) {
+            case "speakerName":
+                setClip((prev) => ({...prev, speakerName: value}))
+                break;
+            case "korSub":
+                setClip((prev) => ({ ...prev, korSub: value }))
+                break;
+        }
         setClip((prev) => ({ ...prev, korSub: value }));
     }
 
     const addClip = () => {
         setData((prev) => [...prev, clip]);
-        // sortClip()
         clearValue();
         isClose()
-    }
-
-    const sortClip = () => {
-        console.log(data);
-        const newData = [...data];
-        newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime))
-        setData(newData);
     }
 
     return (
@@ -89,9 +90,10 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
                 className="modal"
             >
                 <button onClick={isClose}>X</button>
+                <input name="seakerName" value={clip?.speakerName} onChange={handleSubtitle}></input>
                 <input name="startTime" value={clip?.startTime} onChange={handleTime}></input>
                 <input name="endTime" value={clip?.endTime} onChange={handleTime}></input>
-                <input value={clip?.korSub} onChange={handleSubtitle}></input>
+                <input name="korSub" value={clip?.korSub} onChange={handleSubtitle}></input>
                 <button onClick={addClip}>추가</button>
             </div>
         </Transition>
