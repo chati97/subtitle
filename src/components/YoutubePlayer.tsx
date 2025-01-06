@@ -3,6 +3,7 @@ import Papa from 'papaparse'
 import Subtitle from "./Subtitle";
 import { Clip } from "../types/types";
 import "../styles/style.css"
+import Input from "./Input";
 
 const YoutubePlayer: React.FC = () => {
   const playerRef = useRef<HTMLDivElement>(null);
@@ -11,6 +12,8 @@ const YoutubePlayer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>('');
 
   const [player, setPlayer] = useState<YT.Player | null>(null);
+
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const inputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -90,9 +93,6 @@ const YoutubePlayer: React.FC = () => {
       }
       setData(arr);
     }
-    const newData = [...data];
-    newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
-    setData(newData);
     reader.readAsText(file);
   }
 
@@ -123,15 +123,30 @@ const YoutubePlayer: React.FC = () => {
   // 자막 컴포넌트 추가
 
   const addClip = () => {
-    const clip: Clip = {
-      speakerName : '',
-      startTime : '',
-      endTime : '',
-      korSub : ''
-    }
-    setData((prevData) => [...prevData, clip]);
+    console.log('open')
+    setModalOpen(true);
+    // const clip: Clip = {
+    //   speakerName : '',
+    //   startTime : '',
+    //   endTime : '',
+    //   korSub : ''
+    // }
+    // setData((prevData) => [...prevData, clip]);
   }
   
+  // 모달창 제어
+
+  const modalHandler = () => {
+    setModalOpen(!modalOpen);
+  }
+
+  // 데이터 배열 길이 변화 체크
+
+  useEffect(() => {
+    const newData = [...data];
+    newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
+    setData(newData);
+  }, [data.length])
 
   return (
       <div className="PlayerView">
@@ -157,7 +172,7 @@ const YoutubePlayer: React.FC = () => {
           ))}
           <button onClick={addClip}>자막추가</button>
         </div>
-
+      <Input isOpen={modalOpen} isClose={modalHandler} data={data} setData={setData} />
       </div>
     );
 }
