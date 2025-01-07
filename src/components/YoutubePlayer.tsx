@@ -100,12 +100,17 @@ const YoutubePlayer: React.FC = () => {
 
   const exportCSV = () => {
     const headers = Object.keys(data[0]);
+    // const headers = [
+    //   'Speaker Name', 'Start Time', 'End Time', 'Korean'
+    // ]
     const csvRows = [];
+    csvRows.push(['Speaker Name', 'Start Time', 'End Time', 'Korean'])
     csvRows.push(headers.join(','));
     data.forEach((row) => {
       const values = headers.map((header) => row[header as keyof Clip]);
       csvRows.push(values.join(','));
     });
+    csvRows.splice(1, 1);
 
     const csvString = csvRows.join('\n');
 

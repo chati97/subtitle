@@ -32,7 +32,6 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
         let input = e.target.value;
         input = input.replace(/[^0-9]/g, "");
         input = input.slice(0, 8);
-
         if (input.length > 2) {
             input = `${input.slice(0, 2)}:${input.slice(2)}`
             if (input.length > 5) {
@@ -67,10 +66,20 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
     }
 
     const addClip = () => {
+        // setClip((prev) => ({ ...prev, startTime: setTimeTemplate(clip.startTime), endTime: setTimeTemplate(clip.endTime) }))
         setData((prev) => [...prev, clip]);
         clearValue();
         isClose()
     }
+
+    // const setTimeTemplate = (time: string) => {
+    //     let input: string = time;
+    //     input.replace(":", "");
+    //     input.padEnd(8, '0');
+    //     console.log(input);
+    //     // input = `${input.slice(0, 2)}:${input.slice(2, 2)}:${input.slice(4, 2)}:${input.slice(6)}`
+    //     return input;
+    // }
 
     return (
         <Transition

@@ -66,15 +66,15 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     }
     
     const numberToHms = (time: number) => {
-    if (time) {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time - hours * 3600) / 60);
-        const seconds = Math.floor((time - hours * 3600 - minutes * 60));
-        const miliseconds = Math.round((time - hours * 3600 - minutes * 60 - seconds) * 100);
-        return `${hours >= 10 ? hours : `0${hours}`}:${minutes >= 10 ? minutes: `0${minutes}`}:${seconds >= 10 ? seconds : `0${seconds}`}:${miliseconds >= 10 ? miliseconds : `0${miliseconds}`}`
-    } else {
-        return '';
-    }
+        if (time) {
+            const hours = Math.floor(time / 3600);
+            const minutes = Math.floor((time - hours * 3600) / 60);
+            const seconds = Math.floor((time - hours * 3600 - minutes * 60));
+            const miliseconds = Math.round((time - hours * 3600 - minutes * 60 - seconds) * 100);
+            return `${hours >= 10 ? hours : hours === 0 ? `00` : `0${hours}`}:${minutes >= 10 ? minutes : minutes === 0 ? `00` : `0${minutes}`}:${seconds >= 10 ? seconds : seconds === 0 ? `00` : `0${seconds}`}:${miliseconds >= 10 ? miliseconds : miliseconds === 0 ? `00` : `0${miliseconds}`}`
+        } else {
+            return '00:00:00:00'
+        }
     }
     
       // 재생위치 설정 코드
@@ -96,7 +96,7 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     // 시간변경(버튼식 변경)
 
     const changeTime = (curTime: string, change: number, isStart: boolean) => {
-        const nextTime = numberToHms(hmsToNumber(curTime) + change);
+        const nextTime = numberToHms(Math.max(0, Math.min(hmsToNumber(curTime) + change), player ? player?.getDuration() : Number.MAX_VALUE));
         if (isStart) {
             content.startTime = nextTime;
         } else {
@@ -112,7 +112,6 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
         let input = e.target.value;
         input = input.replace(/[^0-9]/g, "");
         input = input.slice(0, 8);
-
         if (input.length > 2) {
             input = `${input.slice(0,2)}:${input.slice(2)}`
             if (input.length > 5) {
@@ -157,8 +156,6 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
         const newData = data.filter((_, index) => index !== id);
         newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
         setData(newData);
-        // setData((data) => (data.filter((_, index) => index !== id)));
-        // setData((data) => (data.splice(id, 1)));
     }
 
     return (
