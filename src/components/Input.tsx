@@ -56,17 +56,13 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
         }
     }
 
-    const handleSubtitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const name = e.target.name;
+    const handleSpeakerName = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        switch (name) {
-            case "speakerName":
-                setClip((prev) => ({...prev, speakerName: value}))
-                break;
-            case "korSub":
-                setClip((prev) => ({ ...prev, korSub: value }))
-                break;
-        }
+        setClip((prev) => ({...prev, speakerName: value}))
+    }
+    
+    const handleKorSub = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
         setClip((prev) => ({ ...prev, korSub: value }));
     }
 
@@ -90,10 +86,12 @@ const Input = ({ isOpen, isClose, data, setData }: Props) => {
                 className="modal"
             >
                 <button onClick={isClose}>X</button>
-                <input name="seakerName" value={clip?.speakerName} onChange={handleSubtitle}></input>
+                <input name="seakerName" value={clip?.speakerName} onChange={handleSpeakerName}></input>
                 <input name="startTime" value={clip?.startTime} onChange={handleTime}></input>
                 <input name="endTime" value={clip?.endTime} onChange={handleTime}></input>
-                <input name="korSub" value={clip?.korSub} onChange={handleSubtitle}></input>
+                <textarea name="korSub" value={clip?.korSub} onChange={handleKorSub}
+                    style={{width: '30rem', height: '10rem', whiteSpace: 'pre-wrap', resize: 'none'}}
+                ></textarea>
                 <button onClick={addClip}>추가</button>
             </div>
         </Transition>

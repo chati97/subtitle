@@ -139,17 +139,15 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
 
     // 자막내용 변경
 
-    const handleContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleSpeakerName = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const name = e.target.name;
-        switch (name) {
-            case "speakerName":
-                content.speakerName = value;
-                break;
-            case "korSub":
-                content.korSub = value;
-                break;
-        }
+        content.speakerName = value;
+        setData((prevData) => prevData.map((item, index) => index === id ? content : item));
+    }
+    
+    const handleKorSub = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        const value = e.target.value;
+        content.korSub = value;
         setData((prevData) => prevData.map((item, index) => index === id ? content : item));
     }
 
@@ -166,7 +164,7 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     return (
         <div>
             {/* <input readOnly={!isModify}></input> */}
-            <input name="speakerName" value={content.speakerName} readOnly={!isModify} onChange={handleContent}/>
+            <input name="speakerName" value={content.speakerName} readOnly={!isModify} onChange={handleSpeakerName}/>
             <input type="text" name="startTime" value={content.startTime} readOnly={!isModify} onChange={handleTime}/>
             {isModify && setTimingSetter(true)}
             {
@@ -175,7 +173,9 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
             <input type="text" name="endTime" value={content.endTime} readOnly={!isModify} onChange={handleTime}/>
             {isModify && setTimingSetter(false)}
             <br />
-            <input type="text" name="korSub" value={content.korSub} readOnly={!isModify} onChange={handleContent}/>
+            <textarea name="korSub" value={content.korSub} readOnly={!isModify} onChange={handleKorSub}
+                style={{width: '30rem', height: '10rem', maxHeight: '100rem', whiteSpace: 'pre-wrap', resize: 'none'}}
+            />
             <br />
             {
                 isModify ? <button onClick={setToData}>완료</button> : <button onClick={isModifyHandler}>수정</button>
