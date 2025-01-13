@@ -153,6 +153,7 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
     // 컴포넌트 삭제
 
     const delSubtitle = () => {
+        setIsModify(false);
         const newData = data.filter((_, index) => index !== id);
         newData.sort((a, b) => a.startTime.localeCompare(b.startTime) || a.endTime.localeCompare(b.endTime));
         setData(newData);
@@ -171,13 +172,16 @@ const Subtitle = ({ id, content, data, setData, player }: Props) => {
             {isModify && setTimingSetter(false)}
             <br />
             <textarea name="korSub" value={content.korSub} readOnly={!isModify} onChange={handleKorSub}
-                style={{width: '30rem', height: '10rem', maxHeight: '100rem', whiteSpace: 'pre-wrap', resize: 'none'}}
+                style={{width: '30rem', height: '3rem', whiteSpace: 'pre-wrap', resize: 'none'}}
             />
             <br />
             {
-                isModify ? <button onClick={setToData}>완료</button> : <button onClick={isModifyHandler}>수정</button>
+                isModify ? <>
+                    <button onClick={setToData}>완료</button>
+                    <button onClick={delSubtitle}>삭제</button>
+                </>
+                : <button onClick={isModifyHandler}>수정</button>
             }
-            <button onClick={delSubtitle}>삭제</button>
         </div>
     )
 }

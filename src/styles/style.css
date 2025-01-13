@@ -6,10 +6,11 @@
 .YoutubeView{
     display: flex;
     flex-direction: column;
+    position: fixed;
 }
 
 .SubtitleView{
-
+    padding-left: 700px;
 }
 
 .modal{

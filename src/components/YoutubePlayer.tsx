@@ -107,12 +107,19 @@ const YoutubePlayer: React.FC = () => {
     csvRows.push(['Speaker Name', 'Start Time', 'End Time', 'Korean'])
     csvRows.push(headers.join(','));
     data.forEach((row) => {
-      const values = headers.map((header) => row[header as keyof Clip]);
+      // const values = headers.map((header) => row[header as keyof Clip]);
+      const values = headers.map((header) => {
+        const value = row[header as keyof typeof row];
+        if (typeof value === 'string' && (value.includes('\n') || value.includes(','))) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      })
       csvRows.push(values.join(','));
     });
     csvRows.splice(1, 1);
 
-    const csvString = csvRows.join('\n');
+    const csvString = csvRows.join('\r\n');
 
     const blob = new Blob([csvString], { type: 'text/csv; charset=utf-8;' });
     const url = URL.createObjectURL(blob);
